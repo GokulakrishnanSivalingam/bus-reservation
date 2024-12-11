@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bus Search with Custom Dropdown</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="mainpage.css">
+
+</head>
+
+<body>
+    <header>
+        <nav class="nav">
+            <span>buZ</span>
+            <ul class="nave">
+                <li><a href="mainpage.html">home</a></li>
+                <li><a href="privacy.html">privacy</a></li>
+                <li><a href="feedback.html">feedback</a></li>
+                <li><a href="signinpage.html" id="sig">signup</a></li>
+                <li><a href="loginpage.html" id="log">login</a></li>
+            </ul>
+        </nav>
+    </header>
+    <center>
+        <div class="slideshow-container">
+            <div class="slideshow-wrapper">
+                <div class="slide">
+                    <img src="p1.jpg" alt="">
+                </div>
+                <div class="slide">
+                    <img src="p2.jpg" alt="">
+                </div>
+                <div class="slide">
+                    <img src="p3.jpg" alt="">
+                </div>
+                <div class="slide">
+                    <img src="p4.jpg" alt="">
+                </div>
+            </div>
+        </div>
+</body>
+
+</center>
+<center>
+    <div class="contain">
+        <form id="bus-search-form" onsubmit="routeToRegi(event)">
+            <fieldset>
+                <!-- Custom styled 'from' dropdown -->
+                <div class="dropdown">
+                    <input type="text" placeholder="From" id="from" name="from" oninput="filterDropdown('from-list', this.value)" autocomplete="off" required>
+                    <div id="from-list" class="dropdown-menu"></div>
+                </div>
+                <i class="fa-solid fa-arrows-up-down" onclick="swap()" id="button"></i>
+
+                <!-- Custom styled 'to' dropdown -->
+                <div class="dropdown">
+                    <input type="text" placeholder="To" id="to" name="to" oninput="filterDropdown('to-list', this.value)" autocomplete="off" required>
+                    <div id="to-list" class="dropdown-menu"></div>
+                </div>
+
+                <br><br>
+                <input type="date" required name="date" id="date"><br><br>
+                <button type="submit">Search</button>
+            </fieldset>
+        </form>
+    </div>
+</center>
+
+
+
+<script>
+    const cityOptions = ["Mumbai", "Delhi", "Bangalore", "Hyderabad", "Chennai",
+        "Coimbatore",
+        "Madurai",
+        "Tiruchirappalli",
+        "Salem",
+        "Erode",
+        "Tiruppur",
+        "Vellore",
+        "Thoothukudi",
+        "Tirunelveli",
+        "Dindigul",
+        "Thanjavur",
+        "Karur",
+        "Cuddalore",
+        "Kanchipuram",
+        "Villupuram",
+        "Sivagangai",
+        "Virudhunagar",
+        "Ramanathapuram",
+        "Nagapattinam",
+        "Tiruvarur",
+        "Ariyalur",
+        "Perambalur",
+        "Krishnagiri",
+        "Dharmapuri",
+        "Namakkal",
+        "Theni",
+        "Pudukkottai",
+        "Nilgiris",
+        "Tirupattur",
+        "Ranipet",
+        "Kallakurichi",
+        "Tenkasi",
+        "Mayiladuthurai",
+        "Chengalpattu"
+    ];
+
+    // Populate dropdowns with options
+    function populateDropdown(listId) {
+        const dropdown = document.getElementById(listId);
+        dropdown.innerHTML = ''; // Clear previous options
+        cityOptions.forEach(city => {
+            const div = document.createElement('div');
+            div.innerHTML = city;
+            div.onclick = () => selectOption(listId, city);
+            dropdown.appendChild(div);
+        });
+    }
+
+    // Filter dropdown options based on input
+    function filterDropdown(listId, value) {
+        const dropdown = document.getElementById(listId);
+        const options = dropdown.querySelectorAll('div');
+        const filterValue = value.toLowerCase();
+
+        dropdown.classList.add('show'); // Show the dropdown
+
+        options.forEach(option => {
+            if (option.innerText.toLowerCase().includes(filterValue)) {
+                option.style.display = 'block';
+            } else {
+                option.style.display = 'none';
+            }
+        });
+    }
+
+    // Select a dropdown option
+    function selectOption(listId, value) {
+        const input = document.getElementById(listId === 'from-list' ? 'from' : 'to');
+        input.value = value;
+        document.getElementById(listId).classList.remove('show'); // Hide dropdown after selection
+    }
+
+    // Close dropdown if clicked outside
+    document.addEventListener('click', function(event) {
+        if (!event.target.closest('.dropdown')) {
+            document.querySelectorAll('.dropdown-menu').forEach(menu => {
+                menu.classList.remove('show');
+            });
+        }
+    });
+
+    // Swap 'from' and 'to' inputs when the button is clicked
+    function swap() {
+        const from = document.getElementById("from");
+        const to = document.getElementById("to");
+
+        // Temporarily store the 'from' value
+        const tempValue = from.value;
+
+        // Swap values between 'from' and 'to'
+        from.value = to.value;
+        to.value = tempValue;
+    }
+
+
+
+    // Function to route to 'regi.html' with 'from' and 'to' query parameters
+    function routeToRegi(event) {
+        event.preventDefault();
+        const from = document.getElementById('from').value;
+        const to = document.getElementById('to').value;
+
+        // Check if both 'from' and 'to' have values
+        if (from && to) {
+            // Redirect to regi.html with 'from' and 'to' as query parameters
+            window.location.href = `regi.html?from=${encodeURIComponent(from)}&to=${encodeURIComponent(to)}`;
+        } else {
+            alert('Please fill in both the "from" and "to" fields.');
+        }
+    }
+
+    // Initialize dropdowns on page load
+    document.addEventListener('DOMContentLoaded', function() {
+        populateDropdown('from-list');
+        populateDropdown('to-list');
+    });
+</script>
+
+</body>
+
+</html>
